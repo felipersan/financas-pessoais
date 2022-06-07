@@ -22,6 +22,10 @@ export default function AuthProvider({children}) {
     loadStorage();
   }, []);
 
+  async function StorageData(data) {
+    await AsyncStorage.setItem('Auth_user', JSON.stringify(data));
+  }
+
   async function SignUp(email, password, name) {
     await firebase
       .auth()
@@ -32,7 +36,7 @@ export default function AuthProvider({children}) {
           .database()
           .ref('users')
           .child(uid)
-          .set({
+          .update({
             name: name,
             saldo: 0,
           })
@@ -65,6 +69,8 @@ export default function AuthProvider({children}) {
               uid: uid,
               name: snapshot.val().name,
               email: email,
+              lastName: snapshot.val().lastName,
+              nickName: snapshot.val().nickName,
             };
             setUser(data);
             StorageData(data);
@@ -72,8 +78,27 @@ export default function AuthProvider({children}) {
       });
   }
 
-  async function StorageData(data) {
-    await AsyncStorage.setItem('Auth_user', JSON.stringify(data));
+  async function Update(name, lastName, nickName) {
+    await firebase
+      .database()
+      .ref('users')
+      .child(user.uid)
+      .update({
+        name: name,
+        lastName: lastName,
+        nickName: nickName,
+      })
+      .then(() => {
+        let data = {
+          uid: user.uid,
+          name: name,
+          email: user.email,
+          lastName: lastName,
+          nickName: nickName,
+        };
+        setUser(data);
+        StorageData(data);
+      });
   }
 
   async function SignOut() {
@@ -89,7 +114,16 @@ export default function AuthProvider({children}) {
 
   return (
     <AuthContext.Provider
-      value={{signed: !!user, user, SignUp, SignIn, SignOut, load}}>
+      value={{
+        signed: !!user,
+        user,
+        setUser,
+        SignUp,
+        SignIn,
+        SignOut,
+        load,
+        Update,
+      }}>
       {children}
     </AuthContext.Provider>
   );
