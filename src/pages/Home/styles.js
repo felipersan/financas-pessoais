@@ -44,15 +44,46 @@ export const Balance = styled.View`
   margin-left: 30px;
   margin-right: 30px;
   background-color: #fff;
-  height: 321px;
+
   border-radius: 40px;
   padding: 30px;
 `;
 
 export const TextBalance = styled.Text`
+  color: #000;
   font-size: 16px;
 `;
 
 export const ValueBalance = styled.Text`
+  color: #505050;
   font-size: 30px;
+  margin-top: 8px;
+`;
+
+export const TransactionHistory = styled.View``;
+
+export const List = styled.FlatList``;
+
+export const Transactions = styled.View`
+  margin-left: 30px;
+  margin-right: 30px;
+`;
+
+export const BtnTransactions = styled.TouchableOpacity`
+  margin-top: 21px;
+  height: 151px;
+  justify-content: center;
+  position: relative;
+`;
+
+export const BtnImage = styled.Image`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+`;
+
+export const TextTransactions = styled.Text`
+  font-size: 20px;
+  color: #fff;
+  margin: 32px;
 `;

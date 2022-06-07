@@ -13,12 +13,50 @@ import {
   Balance,
   TextBalance,
   ValueBalance,
+  Transactions,
+  BtnTransactions,
+  TextTransactions,
+  BtnImage,
+  TransactionHistory,
+  List,
 } from './styles';
+
 import Header from '../../components/Header';
+import TransactionsList from '../../components/TransactionsList';
 
 export default function Home() {
-  const {user, SignOut} = useContext(AuthContext);
-  const [ValBalance, setValBalance] = useState('');
+  const {user} = useContext(AuthContext);
+  const [valBalance, setValBalance] = useState('');
+  const [transactions, setTransactions] = useState([
+    {
+      key: '1',
+      tipo: 'despesa',
+      setor: 'academia',
+      given: '03/02/2022',
+      valor: '70,00',
+    },
+    {
+      key: '2',
+      tipo: 'despesa',
+      setor: 'compras',
+      given: '04/02/2022',
+      valor: '200,00',
+    },
+    {
+      key: '3',
+      tipo: 'receita',
+      setor: 'venda',
+      given: '23/02/2022',
+      valor: '100,00',
+    },
+    {
+      key: '4',
+      tipo: 'despesa',
+      setor: 'compras',
+      given: '22/02/2022',
+      valor: '427,00',
+    },
+  ]);
   const name = user.name.toUpperCase();
 
   useEffect(() => {
@@ -45,10 +83,22 @@ export default function Home() {
       </ViewHeader>
       <Body>
         <Balance>
-          <TextBalance> Seu Saldo total </TextBalance>
-          <ValueBalance>{ValBalance}</ValueBalance>
+          <TextBalance>Seu Saldo total </TextBalance>
+          <ValueBalance>R$ {valBalance}</ValueBalance>
+          <TransactionHistory>
+            <List
+              data={transactions}
+              keyExtractor={item => item.key}
+              renderItem={({item}) => <TransactionsList data={item} />}
+            />
+          </TransactionHistory>
         </Balance>
-        <Button onPress={() => SignOut()} title={'deslogar'} />
+        <Transactions>
+          <BtnTransactions>
+            <BtnImage source={require('../../assets/BtnImage.png')} />
+            <TextTransactions>Veja todas as suas transações </TextTransactions>
+          </BtnTransactions>
+        </Transactions>
       </Body>
     </Container>
   );
