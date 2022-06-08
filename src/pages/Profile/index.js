@@ -18,10 +18,12 @@ import {
   ViewName,
   AreaBtn,
   TextBtn,
+  AreaBtn2,
+  TextBtn2,
 } from './styles';
 
 export default function Profile() {
-  const {user, Update, setUser} = useContext(AuthContext);
+  const {user, Update, setUser, SignOut} = useContext(AuthContext);
   const [name, setName] = useState('');
   const [nickname, setNickname] = useState(name);
   const [lastName, setLastName] = useState('');
@@ -116,6 +118,13 @@ export default function Profile() {
         <TextBtn>Update</TextBtn>
         <Feather name="chevrons-right" color={'#fff'} size={19} />
       </AreaBtn>
+      <AreaBtn2
+        onPress={() => {
+          SignOut();
+        }}>
+        <TextBtn2>Sair</TextBtn2>
+        <Feather name="chevrons-right" color={'#fff'} size={19} />
+      </AreaBtn2>
     </Background>
   );
 }

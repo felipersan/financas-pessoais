@@ -87,6 +87,7 @@ export default function Home() {
           <ValueBalance>R$ {valBalance}</ValueBalance>
           <TransactionHistory>
             <List
+              showsVerticalScrollIndicator={false}
               data={transactions}
               keyExtractor={item => item.key}
               renderItem={({item}) => <TransactionsList data={item} />}

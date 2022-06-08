@@ -44,8 +44,8 @@ export const Balance = styled.View`
   margin-left: 30px;
   margin-right: 30px;
   background-color: #fff;
-
   border-radius: 40px;
+
   padding: 30px;
 `;
 
@@ -60,7 +60,10 @@ export const ValueBalance = styled.Text`
   margin-top: 8px;
 `;
 
-export const TransactionHistory = styled.View``;
+export const TransactionHistory = styled.View`
+  margin-top: 10px;
+  height: 200px;
+`;
 
 export const List = styled.FlatList``;
 

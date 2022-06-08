@@ -67,3 +67,22 @@ export const TextBtn = styled.Text`
   font-size: 16px;
   color: #fff;
 `;
+
+export const AreaBtn2 = styled.TouchableOpacity`
+  margin-top: 15px;
+  width: 80%;
+  height: 72px;
+  background-color: #f64f46;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 28px;
+  flex-direction: row;
+  padding-right: 24px;
+  padding-left: 24px;
+  elevation: 2;
+`;
+
+export const TextBtn2 = styled.Text`
+  font-size: 16px;
+  color: #fff;
+`;
