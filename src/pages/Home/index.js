@@ -1,6 +1,7 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {Button} from 'react-native';
 import firebase from '../../services/firebaseConnection';
+import {format} from 'date-fns';
 import {AuthContext} from '../../contexts/auth';
 
 import {
@@ -20,44 +21,14 @@ import {
   TransactionHistory,
   List,
 } from './styles';
-
 import Header from '../../components/Header';
 import TransactionsList from '../../components/TransactionsList';
 
 export default function Home() {
   const {user} = useContext(AuthContext);
-  const [valBalance, setValBalance] = useState('');
-  const [transactions, setTransactions] = useState([
-    {
-      key: '1',
-      tipo: 'despesa',
-      setor: 'academia',
-      given: '03/02/2022',
-      valor: '70,00',
-    },
-    {
-      key: '2',
-      tipo: 'despesa',
-      setor: 'compras',
-      given: '04/02/2022',
-      valor: '200,00',
-    },
-    {
-      key: '3',
-      tipo: 'receita',
-      setor: 'venda',
-      given: '23/02/2022',
-      valor: '100,00',
-    },
-    {
-      key: '4',
-      tipo: 'despesa',
-      setor: 'compras',
-      given: '22/02/2022',
-      valor: '427,00',
-    },
-  ]);
-  const name = user.name.toUpperCase();
+  const [valBalance, setValBalance] = useState(0);
+  const [transactions, setTransactions] = useState([]);
+  const myName = user.name.toUpperCase();
 
   useEffect(() => {
     async function takeBalance() {
@@ -66,10 +37,39 @@ export default function Home() {
         .ref('users')
         .child(user.uid)
         .on('value', snapshot => {
-          setValBalance(snapshot.val().saldo);
+          let saldo = parseFloat(snapshot.val().saldo).toFixed(2);
+          setValBalance(saldo);
         });
     }
     takeBalance();
+  }, []);
+
+  useEffect(() => {
+    async function takeTransations() {
+      await firebase
+        .database()
+        .ref('historico')
+        .child(user.uid)
+        .orderByChild('date')
+        .equalTo(format(new Date(), 'dd/MM/yy'))
+        .on('value', snapshot => {
+          setTransactions([]);
+          snapshot.forEach(childitem => {
+            let list = {
+              key: childitem.key,
+              color: childitem.val().color,
+              name: childitem.val().name,
+              value: childitem.val().value,
+              given: childitem.val().given,
+              type: childitem.val().type,
+              typeTransaction: childitem.val().typeTransaction,
+              date: childitem.val().date,
+            };
+            setTransactions(oldArray => [...oldArray, list]);
+          });
+        });
+    }
+    takeTransations();
   }, []);
 
   return (
@@ -79,7 +79,7 @@ export default function Home() {
           <Header color={'#fff'} />
           <ProfilePicture source={require('../../assets/perfil.png')} />
         </AreaHeader>
-        <ProfileName>BOM DIA {name}</ProfileName>
+        <ProfileName>BOM DIA {myName}</ProfileName>
       </ViewHeader>
       <Body>
         <Balance>

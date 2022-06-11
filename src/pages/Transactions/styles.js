@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import {Pressable} from 'react-native';
 
 export const Background = styled.View`
   margin-left: 20px;
@@ -14,7 +15,7 @@ export const Image = styled.Image`
 
 export const AreaHeader = styled.View``;
 
-export const AreaBtn = styled.TouchableOpacity`
+export const AreaBtn = styled.Pressable`
   margin-top: 15px;
   width: 100%;
   height: 72px;
@@ -41,5 +42,5 @@ export const TextBtn = styled.Text`
 export const SetTransaction = styled.View`
   width: 100%;
   height: ${props => props.height};
-  background-color: #21a0aa;
+  background-color: #fff;
 `;

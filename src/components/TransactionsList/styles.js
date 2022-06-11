@@ -16,10 +16,15 @@ export const Icon = styled.View`
   width: 48px;
   height: 48px;
   border-radius: 24px;
-  background-color: #21a0aa;
+  background-color: ${props => props.color};
   align-items: center;
   justify-content: center;
   margin-right: 8px;
+`;
+
+export const IconImage = styled.Image`
+  width: 28px;
+  height: 28px;
 `;
 
 export const ViewExpenseType = styled.View`
