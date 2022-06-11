@@ -1,8 +1,8 @@
 import React, {useContext, useState, useEffect} from 'react';
-import {Button} from 'react-native';
 import firebase from '../../services/firebaseConnection';
 import {format} from 'date-fns';
 import {AuthContext} from '../../contexts/auth';
+import {useNavigation} from '@react-navigation/native';
 
 import {
   Container,
@@ -29,6 +29,7 @@ export default function Home() {
   const [valBalance, setValBalance] = useState(0);
   const [transactions, setTransactions] = useState([]);
   const myName = user.name.toUpperCase();
+  const navigation = useNavigation();
 
   useEffect(() => {
     async function takeBalance() {
@@ -95,7 +96,7 @@ export default function Home() {
           </TransactionHistory>
         </Balance>
         <Transactions>
-          <BtnTransactions>
+          <BtnTransactions onPress={() => navigation.navigate('Transactions')}>
             <BtnImage source={require('../../assets/BtnImage.png')} />
             <TextTransactions>Veja todas as suas transações </TextTransactions>
           </BtnTransactions>

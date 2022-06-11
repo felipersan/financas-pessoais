@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import {Pressable} from 'react-native';
+import {Pressable, flatList} from 'react-native';
 
 export const Background = styled.View`
   margin-left: 20px;
@@ -44,3 +44,11 @@ export const SetTransaction = styled.View`
   height: ${props => props.height};
   background-color: #fff;
 `;
+
+export const TransactionHistory = styled.View`
+  height: 100%;
+  width: 100%;
+  margin-top: 20px;
+`;
+
+export const List = styled.FlatList``;

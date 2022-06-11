@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {Button} from 'react-native';
-import {SafeAreaView} from 'react-native';
+import React, {useState, useEffect, useContext} from 'react';
+import firebase from '../../services/firebaseConnection';
+import TransactionsList from '../../components/TransactionsList';
 
 import Header from '../../components/Header';
 import {
@@ -10,16 +10,48 @@ import {
   TextBtn,
   Image,
   SetTransaction,
+  TransactionHistory,
+  List,
 } from './styles';
 import Feather from 'react-native-vector-icons/Feather';
 
 import NewTransaction from '../../components/NewTransactions';
+import {AuthContext} from '../../contexts/auth';
 
 export default function Transactions() {
   const [height, setHeigth] = useState(0);
   const [borderLeft, setborderLeft] = useState(28);
   const [borderRigth, setBorderRigth] = useState(28);
   const [data, setData] = useState('');
+  const [transactions, setTransactions] = useState([]);
+  const {user} = useContext(AuthContext);
+
+  useEffect(() => {
+    async function takeTransations() {
+      await firebase
+        .database()
+        .ref('historico')
+        .child(user.uid)
+        .orderByChild('given')
+        .on('value', snapshot => {
+          setTransactions([]);
+          snapshot.forEach(childitem => {
+            let list = {
+              key: childitem.key,
+              color: childitem.val().color,
+              name: childitem.val().name,
+              value: childitem.val().value,
+              given: childitem.val().given,
+              type: childitem.val().type,
+              typeTransaction: childitem.val().typeTransaction,
+              date: childitem.val().date,
+            };
+            setTransactions(oldArray => [list, ...oldArray]);
+          });
+        });
+    }
+    takeTransations();
+  }, []);
 
   function changeHeigth() {
     if (height === 0) {
@@ -71,6 +103,14 @@ export default function Transactions() {
           )}
         </SetTransaction>
       </AreaHeader>
+      <TransactionHistory>
+        <List
+          showsVerticalScrollIndicator={false}
+          data={transactions}
+          keyExtractor={item => item.key}
+          renderItem={({item}) => <TransactionsList data={item} />}
+        />
+      </TransactionHistory>
     </Background>
   );
 }
